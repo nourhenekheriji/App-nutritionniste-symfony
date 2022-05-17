@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Consultation index{% endblock %}
+
+{% block body %}
+    <h1>Consultation index</h1>
+{% if consultations %}
+    <table id="consultations" class="table table-success table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Operation</th>
+                <th>DateC</th>
+                <th>Poids</th>
+                <th>Prix</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for consultation in consultations %}
+            <tr>
+                <td>{{ consultation.id }}</td>
+                <td>{{ consultation.operation }}</td>
+                <td>{{ consultation.dateC ? consultation.dateC|date('Y-m-d') : '' }}</td>
+                <td>{{ consultation.poids }}</td>
+                <td>{{ consultation.prix }}</td>
+                <td>
+                    <a href="{{ path('consultation_edit', {'id': consultation.id}) }}"class="btn btn-info">edit</a>
+              <a href="{{ path('consultation_delete', {'id': consultation.id}) }}" class="btn btn-danger">Delete</a>
+
+
+          
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+    <a href="{{ path('consultation_new') }}">Create new</a>
+
+
+    
+{% endblock %}

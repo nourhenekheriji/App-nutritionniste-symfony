@@ -1,0 +1,41 @@
+{% extends 'front.html.twig' %}
+
+{% block title %} Mes RendezVous{% endblock %}
+
+{% block body %}
+    <h1> Mes RendezVous</h1><br><br><br><br>  <a href="{{ path('callendar') }}" class="btn btn-success">Calendrier</a>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th>Title</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for rendez_vou in rendez_vouses %}
+            <tr>
+                <td>{{ rendez_vou.title }}</td>
+                <td>{{ rendez_vou.start ? rendez_vou.start|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ rendez_vou.end ? rendez_vou.end|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ rendez_vou.description }}</td>
+                <td>
+                    <a href="{{ path('rendez_vous_edit', {'id': rendez_vou.id}) }}" class="btn btn-danger">edit</a>
+                    <a href="{{ path('rendezvous_delete', {'id': rendez_vou.id}) }}" class="btn btn-danger">Delete</a>
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

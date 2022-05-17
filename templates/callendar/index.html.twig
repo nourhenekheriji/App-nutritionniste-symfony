@@ -1,0 +1,64 @@
+{% extends 'front.html.twig' %}
+
+{% block titre %} Ma Callendrier!{% endblock %}
+
+{% block stylesheets %}
+  <style>
+      #calendrier{
+          width: 80%;
+          margin: auto;
+      }
+  </style>
+{% endblock %}
+
+{% block body %}
+    <div id="calendrier"></div>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        window.onload = () => {
+
+            let calendarElt = document.querySelector("#calendrier")
+            let calendar = new FullCalendar.Calendar(calendarElt, {
+                initialView : 'dayGridMonth',
+                locale:'fr',
+                timeZone:'Afrique/Tunis',
+                headerToolbar :{
+                    start:'prev,next today',
+                    center:'title',
+                    end: 'dayGridMonth,timeGridWeek'
+                },
+                events: {{ data|raw }},
+                editable: true,
+                eventResizableFromStart:true
+            })
+
+            calendar.on('eventChange',(e) => {
+                let url = `/rendez/${e.event.id}/editrendezvous`
+                let donnees = {
+                    "title": e.event.title,
+                    "description":e.event.extendedProps.description,
+                    "start": e.event.start,
+                    "end" : e.event.end,
+                    "borderColor":e.event.borderColor,
+                    "textColor":e.event.textColor,
+                    "backgroundColor":e.event.backgroundColor
+
+                }
+                console.log(donnees);
+                let xhr = new XMLHttpRequest
+                xhr.open("PUT",url)
+                xhr.send(JSON.stringify(donnees))
+            } )
+
+            calendar.render()
+
+
+
+        }
+
+
+    </script>
+{% endblock %}
